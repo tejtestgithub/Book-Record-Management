@@ -1,5 +1,8 @@
 const express = require("express");
-const { users } = require("./data/users.json");
+
+// Importing Routes
+const usersRouter = require("./routes/users");
+const booksRouter = require("./routes/books");
 
 const app = express();
 
@@ -10,28 +13,15 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.status(200).json({
     message: "Server is up and running sucessfully",
-    data: "hey",
   });
 });
 
-/**
- * Route : /users
- * Method : GET
- * Description : get all user information
- * Access : public
- * Parameters : None
- */
-
-app.get("/users", (req, res) => {
-  res.status(200).json({
-    success: true,
-    data: users,
-  });
-});
+app.use("/users", usersRouter);
+app.use("/books", booksRouter);
 
 app.get("*", (req, res) => {
-  res.status(200).json({
-    message: "this route doesn't exist",
+  res.status(404).json({
+    message: "This route doesn't exist",
   });
 });
 
